@@ -1,12 +1,14 @@
 #include <ArduinoJson.h>
 String inData;
 int is_matrix = true;
-const int lengthX = 2;
-const int lengthY = 6;
-boolean stateMatrix[lengthX][lengthY];
+const int lengthX = 1;
+const int lengthY = 3;
+boolean stateMatrixR[lengthX][lengthY];
+boolean stateMatrixG[lengthX][lengthY];
+boolean stateMatrixB[lengthX][lengthY];
 byte matricePin[lengthX][lengthY] = {
-  2, 5, 8, 11,14,17,
-  20,23,26,29,32,35
+  2, 5, 8/*, 11,14,17,
+  20,23,26,29,32,35*/
   /*19,22,25,28,31,34,
     37,40,43,46,49,52,
     55,58,61,64,70,73,
@@ -48,22 +50,54 @@ void loop() {
       delay(1000);
       return;
 
-    }
-    for (int x = 0; x < lengthX; x++) {
-      for (int y = 0; y < lengthY; y++) {
-        stateMatrix[x][y] = parsed["data"][x][y];
+    }else{
+      for (int x = 0; x < lengthX; x++) {
+        for (int y = 0; y < lengthY; y++) {
+          int p = parsed["data"][x][y];
+          switch(p){
+            case 1:
+              stateMatrixR[x][y] = 1;
+              stateMatrixG[x][y] = 0;
+              stateMatrixB[x][y] = 0;
+            case 2:
+              stateMatrixR[x][y] = 1;
+              stateMatrixG[x][y] = 1;
+              stateMatrixB[x][y] = 0;
+            case 3:
+              stateMatrixR[x][y] = 1;
+              stateMatrixG[x][y] = 1;
+              stateMatrixB[x][y] = 1;
+            case 4:
+              stateMatrixR[x][y] = 0;
+              stateMatrixG[x][y] = 1;
+              stateMatrixB[x][y] = 0;
+            case 5:
+              stateMatrixR[x][y] = 0;
+              stateMatrixG[x][y] = 1;
+              stateMatrixB[x][y] = 1;
+            case 6:
+              stateMatrixR[x][y] = 0;
+              stateMatrixG[x][y] = 0;
+              stateMatrixB[x][y] = 1;
+            case 7:
+              stateMatrixR[x][y] = 0;
+              stateMatrixG[x][y] = 0;
+              stateMatrixB[x][y] = 0;
+          }
+          //stateMatrix[x][y] = parsed["data"][x][y];
+        }
       }
-    }
   
-    inData = "";
-    is_matrix = true;
+      inData = "";
+      is_matrix = true;
+    }
     if (is_matrix == true) {
       for (int x = 0; x < lengthX; x++) {
         for (int y = 0; y < lengthY; y++) {
           //Serial.println((String)"pin" + matricePin[x][y] + "etat : " + stateMatrix[x][y]);
-          //digitalWrite((matricePin[x][y]), stateMatrix[x][y]);
-          //digitalWrite((matricePin[x][y] + 1), stateMatrix[x][y]);
-          digitalWrite((matricePin[x][y] + 2), stateMatrix[x][y]);
+          digitalWrite((matricePin[x][y]), stateMatrixR[x][y]);
+          digitalWrite((matricePin[x][y] + 1), stateMatrixG[x][y]);
+          digitalWrite((matricePin[x][y] + 2), stateMatrixB[x][y]);
         }
 
       }
