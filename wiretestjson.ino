@@ -80,6 +80,10 @@ void loop() {
               stateMatrixG[x][y] = 0;
               stateMatrixB[x][y] = 1;
             case 7:
+              stateMatrixR[x][y] = 1;
+              stateMatrixG[x][y] = 0;
+              stateMatrixB[x][y] = 1;         
+            case 8:
               stateMatrixR[x][y] = 0;
               stateMatrixG[x][y] = 0;
               stateMatrixB[x][y] = 0;
